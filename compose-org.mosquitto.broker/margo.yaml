@@ -26,7 +26,7 @@ deploymentProfiles:
     components:
       - name: mosquitto-broker
         properties:
-          packageLocation: https://console.flecs.tech/api/v2/manifests/org.mosquitto.broker/2.1.1-alpine
+          packageLocation: https://console-dev.flecs.tech/api/v2/manifests/org.mosquitto.broker/2.1.1-alpine
 parameters:
   mqttPort:
     value: 1883

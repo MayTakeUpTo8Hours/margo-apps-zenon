@@ -26,7 +26,7 @@ deploymentProfiles:
     components:
       - name: node-red
         properties:
-          packageLocation: https://console.flecs.tech/api/v2/manifests/org.openjsf.node-red/4.1.4
+          packageLocation: https://console-dev.flecs.tech/api/v2/manifests/org.openjsf.node-red/4.1.4
 parameters:
   nodeRedPort:
     value: 1880
