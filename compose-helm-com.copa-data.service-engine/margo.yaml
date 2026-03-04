@@ -1,0 +1,111 @@
+apiVersion: margo.org/v1-alpha1
+kind: ApplicationDescription
+metadata:
+  id: zenon-service-engine
+  name: zenon Service Engine
+  description: zenon Service Engine with zenon Logging Server and zenon System Server
+  version: 16.0.538066
+  catalog:
+    application:
+      icon: ./resources/zenon-logo.svg
+      tagline: zenon Service Engine
+      descriptionFile: ./resources/description.md
+      releaseNotes: ./resources/release-notes.md
+      licenseFile: ./resources/license.txt
+      site: https://copadata.com
+      tags: ["industrial automation", "SCADA", "software plc", "virtual plc", "communication protocols"]
+    author:
+      - name: COPA-DATA
+        email: sales@copadata.com
+    organization:
+      - name: Ing. Punzenberger COPA-DATA GmbH
+        site: https://copadata.com
+deploymentProfiles:
+  - type: compose
+    id: zenon-service-engine-compose
+    components:
+      - name: zenon-service-engine-compose
+        properties:
+          packageLocation: https://margo-plugfest.demo-copadata.com/compose.yaml
+  - type: helm.v3
+    id: zenon-service-engine-helm
+    components:
+      - name: zenon-service-engine-helm
+        properties:
+          repository: oci://copadata.azurecr.io/margo/service-engine-helm
+          revision: 16.0.0
+parameters:
+  runtimeLicenseSerial:
+    targets:
+      - pointer: ENV.RUNTIME_LICENSING_SERIAL0
+        components: ["zenon-service-engine-compose"]
+      - pointer: licensing.runtime.serial
+        components: ["zenon-service-engine-helm"]
+  runtimeLicenseSerialLocation:
+    targets:
+      - pointer: ENV.RUNTIME_LICENSING_SERIAL0_LOCATION
+        components: ["zenon-service-engine-compose"]
+      - pointer: licensing.runtime.server
+        components: ["zenon-service-engine-helm"]
+  processGatewayLicenseSerial:
+    targets:
+      - pointer: ENV.PROCESSGATEWAY_LICENSING_SERIAL0
+        components: ["zenon-service-engine-compose"]
+      - pointer: licensing.processGateway.serial
+        components: ["zenon-service-engine-helm"]
+  processGatewayLicenseSerialLocation:
+    targets:
+      - pointer: ENV.PROCESSGATEWAY_LICENSING_SERIAL0_LOCATION
+        components: ["zenon-service-engine-compose"]
+      - pointer: licensing.processGateway.server
+        components: ["zenon-service-engine-helm"]
+  logicLicenseSerial:
+    targets:
+      - pointer: ENV.LOGIC_LICENSING_SERIAL0
+        components: ["zenon-service-engine-compose"]
+      - pointer: licensing.logic.serial
+        components: ["zenon-service-engine-helm"]
+  logicLicenseSerialLocation:
+    targets:
+      - pointer: ENV.LOGIC_LICENSING_SERIAL0_LOCATION
+        components: ["zenon-service-engine-compose"]
+      - pointer: licensing.logic.server
+        components: ["zenon-service-engine-helm"]
+configuration:
+  sections:
+    - name: License configuration
+      settings:
+        - parameter: runtimeLicenseSerial
+          name: Service Engine License Serial
+          description: License Serial for the Service Engine to use
+          schema: licenseSerial
+        - parameter: runtimeLicenseSerialLocation
+          name: Service Engine License server address
+          description: Server address of the license service to consume the Service Engine license from
+          schema: licenseServer
+        - parameter: processGatewayLicenseSerial
+          name: Process Gateway License Serial
+          description: License Serial for the Process Gateway to use
+          schema: licenseSerial
+        - parameter: processGatewayLicenseSerialLocation
+          name: Process Gateway license server address
+          description: Server address of the license service to consume the Process Gateway license from
+          schema: licenseServer
+        - parameter: logicLicenseSerial
+          name: Logic Service License Serial
+          description: License Serial for the Logic Service to use
+          schema: licenseSerial
+        - parameter: logicLicenseSerialLocation
+          name: Logic Service license server address
+          description: Server address of the license service to consume the Logic Service license from
+          schema: licenseServer
+  schema:
+    - name: licenseServer
+      dataType: string
+      allowEmpty: false
+    - name: licenseSerial
+      dataType: string
+      minLength: 29
+      maxLength: 29
+      allowEmpty: false
+      regexMatch: "^([A-Z0-9]{5}-){4}([A-Z0-9]{5})$"
