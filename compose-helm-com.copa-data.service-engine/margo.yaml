@@ -102,10 +102,5 @@ configuration:
   schema:
     - name: licenseServer
       dataType: string
-      allowEmpty: false
     - name: licenseSerial
       dataType: string
-      minLength: 29
-      maxLength: 29
-      allowEmpty: false
-      regexMatch: "^([A-Z0-9]{5}-){4}([A-Z0-9]{5})$"
